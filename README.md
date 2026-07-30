@@ -1,10 +1,12 @@
-# 🎯 CareerMentor AI
+# 🎯 CareerMentor AI (MVP)
 
-**An all-in-one AI-powered placement preparation and career mentorship platform** built on the MERN stack — helping students improve resumes, ace interviews, practice aptitude, and get personalized career guidance, all in one place.
+**An AI-powered career preparation platform** — built with the MERN stack, helping students analyze their resumes, chat with an AI career mentor, and get a personalized learning roadmap.
 
-![MERN Stack](https://img.shields.io/badge/Stack-MERN-green)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
+> This is a **3-day MVP build**, scoped down from a larger CareerMentor AI concept to focus on core, demoable AI features rather than a full multi-role platform.
+
+![Tech Stack](https://img.shields.io/badge/Stack-MERN-green)
+![Status](https://img.shields.io/badge/Status-MVP-orange)
+![License](https://img.shields.io/badge/License-Learning%2FPortfolio-blue)
 
 ---
 
@@ -13,191 +15,142 @@
 - [Overview](#-overview)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
-- [Folder Structure](#-folder-structure)
-- [Database Schema](#-database-schema)
+- [Project Structure](#-project-structure)
+- [Database Models](#-database-models)
 - [Getting Started](#-getting-started)
 - [Environment Variables](#-environment-variables)
-- [API Documentation](#-api-documentation)
-- [Deployment Guide](#-deployment-guide)
-- [Security](#-security)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
+- [API Endpoints](#-api-endpoints)
+- [3-Day Build Plan](#-3-day-build-plan)
+- [Future Improvements](#-future-improvements)
 - [License](#-license)
 
 ---
 
 ## 🚀 Overview
 
-**CareerMentor AI** is a full-stack placement preparation platform designed for students, recruiters, and administrators. It combines AI-driven resume analysis, mock interviews, career mentorship, a job portal, and skill analytics into a single, modern, and responsive web application.
+CareerMentor AI (MVP) is a single-role (Student) platform focused on four things:
 
-The platform is built with clean architecture, reusable components, a scalable folder structure, and production-ready practices — making it suitable both as a real-world product and as a strong portfolio project.
+1. Secure login/signup
+2. AI-powered resume analysis
+3. An AI chat mentor for career guidance
+4. An AI-generated personalized learning roadmap
+
+The goal of this MVP is to demonstrate full-stack development, AI integration, and clean UI/UX within a tight 3-day timeline — without the overhead of multi-role auth, a job portal, or admin tooling.
 
 ---
 
 ## ✨ Features
 
-### 🔐 Authentication & Roles
-- Signup / Login with JWT-based authentication
-- Email verification & Forgot Password flow
-- Role-based access control — **Student**, **Recruiter**, **Admin**
-- Protected routes on both client and server
-
-### 🎓 Student Dashboard
-- Personalized welcome & placement progress overview
-- Resume completion & ATS score widgets
-- Daily goals, skill progress, and streaks
-- Applied jobs, upcoming interviews, and notifications feed
+### 🔐 Authentication
+- Signup / Login with JWT
+- Protected routes
+- Single role: **Student**
 
 ### 📄 AI Resume Analyzer
-- Upload resumes in PDF format
+- Upload resume as PDF
 - AI-generated ATS score
-- Missing skills detection & keyword suggestions
-- Bullet point improvement suggestions
-- Certification & project recommendations
-- Visual results with charts and progress bars
+- Missing skills detection
+- Keyword & improvement suggestions
 
-### 🤖 AI Career Mentor (Chat Assistant)
-- Conversational career guidance
-- Personalized placement roadmap & learning path
-- Skill recommendations, company prep, salary guidance
-- Persistent chat history per user
-
-### 🎤 AI Mock Interview
-- Role-, experience-, and skill-based question generation
-- HR, Technical, and Behavioral interview types
-- AI feedback with score & confidence rating
-- Suggested answers and improvement tips
-- Full interview history tracking
-
-### 💼 Job Portal
-- Recruiters: post, edit, and delete job listings
-- Students: search, filter, apply, save jobs, and track applications
+### 🤖 AI Career Mentor (Chat)
+- Conversational AI assistant for career guidance
+- Skill recommendations & general placement advice
+- Chat history stored per user
 
 ### 🗺️ Roadmap Generator
-- Input current skills, target role, and target company
-- AI-generated weekly learning plan with projects, resources, and certifications
+- Input: current skills + target role
+- Output: AI-generated weekly learning plan with resources and practice suggestions
 
-### 💻 Coding & Aptitude Practice
-- Coding, aptitude, logical reasoning, SQL, JavaScript, and Python quizzes
-- Score and progress tracking
-
-### 📌 Project Recommender
-- AI-suggested projects based on skills, experience, and career goals
-- Includes difficulty, tech stack, GitHub structure, and learning outcomes
-
-### 📊 Skill Analytics
-- Visual charts for skill progress, study hours, interview scores, resume improvement, applications sent, and success rate
-
-### 🔔 Notifications
-- Interview reminders, resume updates, new job alerts, daily goals, and learning reminders
-
-### 🛠️ Admin Panel
-- Manage users & jobs, view platform-wide analytics, remove spam, monitor activity
-
-### 🎁 Bonus Features
-- GitHub profile analysis & LinkedIn import
-- Portfolio & resume builder
-- AI cover letter generator
-- Voice interviews (speech-to-text / text-to-speech)
-- Calendar integration & email notifications
-- Achievement badges, streaks, and leaderboard
+### 📊 Simple Dashboard
+- Resume score summary
+- Roadmap status
+- Quick links to chat & resume analyzer
 
 ---
 
-## 🧰 Tech Stack
+## 🛠 Tech Stack
 
-| Layer | Technologies |
+### Frontend
+| Technology | Purpose |
 |---|---|
-| **Frontend** | React.js, Vite, Tailwind CSS, React Router, Axios, React Hook Form, Framer Motion, Chart.js, React Icons |
-| **Backend** | Node.js, Express.js, MongoDB Atlas, Mongoose, JWT, bcrypt, Multer, Cloudinary, Nodemailer |
-| **AI Integration** | Gemini API / OpenAI API |
-| **Deployment** | Vercel (Frontend), Render (Backend), MongoDB Atlas (Database) |
+| React.js | UI framework |
+| Vite | Development & build tool |
+| Tailwind CSS | Styling |
+| React Router | Client-side routing |
+| Axios | API requests |
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| Node.js | Runtime environment |
+| Express.js | REST API server |
+| MongoDB Atlas | Database |
+| Mongoose | ODM |
+| JWT + bcrypt | Authentication |
+| Multer | Resume (PDF) uploads |
+
+### AI Integration
+| Technology | Purpose |
+|---|---|
+| Gemini API / OpenAI API | Resume analysis, chat mentor, roadmap generation |
+
+### Deployment
+| Layer | Platform |
+|---|---|
+| Frontend | Vercel |
+| Backend | Render |
+| Database | MongoDB Atlas |
 
 ---
 
-## 📁 Folder Structure
+## 📂 Project Structure
 
 ```
-careermentor-ai/
-├── client/                          # React frontend (Vite)
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   │   ├── common/              # Buttons, Cards, Modals, Loaders
-│   │   │   ├── dashboard/
-│   │   │   ├── resume/
-│   │   │   ├── interview/
-│   │   │   ├── mentor-chat/
-│   │   │   ├── jobs/
-│   │   │   └── analytics/
-│   │   ├── pages/
-│   │   │   ├── auth/                # Login, Signup, ForgotPassword
-│   │   │   ├── student/
-│   │   │   ├── recruiter/
-│   │   │   └── admin/
-│   │   ├── layouts/
-│   │   ├── context/                 # AuthContext, ThemeContext
-│   │   ├── hooks/
-│   │   ├── services/                # Axios API service files
-│   │   ├── utils/
-│   │   ├── routes/                  # ProtectedRoute, RoleBasedRoute
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── tailwind.config.js
-│   ├── vite.config.js
-│   └── package.json
+careermentor-ai-mvp/
 │
-├── server/                          # Express backend
-│   ├── config/                      # db.js, cloudinary.js, nodemailer.js
+├── client/                     # React frontend (Vite)
+│   └── src/
+│       ├── components/
+│       │   ├── common/
+│       │   ├── resume/
+│       │   ├── mentor-chat/
+│       │   └── dashboard/
+│       ├── pages/
+│       │   ├── auth/           # Login, Signup
+│       │   ├── Dashboard.jsx
+│       │   ├── ResumeAnalyzer.jsx
+│       │   ├── MentorChat.jsx
+│       │   └── Roadmap.jsx
+│       ├── context/             # AuthContext
+│       ├── services/            # Axios API calls
+│       ├── routes/              # ProtectedRoute
+│       ├── App.jsx
+│       └── main.jsx
+│
+├── server/                     # Express backend
+│   ├── config/                 # db.js
 │   ├── controllers/
 │   │   ├── authController.js
 │   │   ├── resumeController.js
-│   │   ├── interviewController.js
 │   │   ├── mentorController.js
-│   │   ├── jobController.js
-│   │   ├── roadmapController.js
-│   │   ├── analyticsController.js
-│   │   └── adminController.js
+│   │   └── roadmapController.js
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Resume.js
-│   │   ├── Interview.js
-│   │   ├── Roadmap.js
-│   │   ├── Job.js
-│   │   ├── Application.js
-│   │   ├── Notification.js
 │   │   ├── ChatHistory.js
-│   │   ├── Project.js
-│   │   ├── Skill.js
-│   │   └── Certificate.js
+│   │   └── Roadmap.js
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── resumeRoutes.js
-│   │   ├── interviewRoutes.js
 │   │   ├── mentorRoutes.js
-│   │   ├── jobRoutes.js
-│   │   ├── roadmapRoutes.js
-│   │   ├── analyticsRoutes.js
-│   │   └── adminRoutes.js
+│   │   └── roadmapRoutes.js
 │   ├── middlewares/
 │   │   ├── authMiddleware.js
-│   │   ├── roleMiddleware.js
-│   │   ├── errorMiddleware.js
-│   │   ├── rateLimiter.js
 │   │   └── uploadMiddleware.js
 │   ├── services/
-│   │   └── aiService.js             # Gemini/OpenAI integration layer
-│   ├── utils/
-│   │   ├── generateToken.js
-│   │   ├── sendEmail.js
-│   │   └── validators.js
+│   │   └── aiService.js         # Gemini/OpenAI integration layer
 │   ├── server.js
 │   └── package.json
-│
-├── docs/
-│   ├── API.md
-│   └── DEPLOYMENT.md
 │
 ├── .env.example
 ├── .gitignore
@@ -206,21 +159,14 @@ careermentor-ai/
 
 ---
 
-## 🗄️ Database Schema
+## 🗄️ Database Models
 
-| Collection | Purpose |
+| Model | Purpose |
 |---|---|
-| **Users** | Student, recruiter, and admin account data & roles |
-| **Resumes** | Uploaded resumes, ATS scores, AI analysis results |
-| **Interviews** | Mock interview sessions, questions, feedback, scores |
-| **Roadmaps** | AI-generated personalized learning roadmaps |
-| **Jobs** | Job postings created by recruiters |
-| **Applications** | Student job applications and status tracking |
-| **Notifications** | System and activity notifications per user |
-| **ChatHistory** | AI Career Mentor conversation logs |
-| **Projects** | AI-recommended project suggestions |
-| **Skills** | Skill tracking and progress data |
-| **Certificates** | Earned/recommended certifications |
+| **User** | Student account data (name, email, password hash) |
+| **Resume** | Uploaded resume file reference, ATS score, AI analysis output |
+| **ChatHistory** | AI Career Mentor conversation logs, linked to user |
+| **Roadmap** | AI-generated learning roadmap, linked to user |
 
 ---
 
@@ -229,16 +175,14 @@ careermentor-ai/
 ### Prerequisites
 - Node.js v18+
 - MongoDB Atlas account
-- Cloudinary account (resume/image storage)
 - Gemini API or OpenAI API key
-- SMTP credentials (for Nodemailer)
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/careermentor-ai.git
-cd careermentor-ai
+git clone https://github.com/your-username/careermentor-ai-mvp.git
+cd careermentor-ai-mvp
 
 # Install backend dependencies
 cd server
@@ -259,13 +203,14 @@ npm run dev
 npm run dev
 ```
 
-The frontend will run on `http://localhost:5173` and the backend on `http://localhost:5000` (default ports).
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:5000`
 
 ---
 
 ## 🔑 Environment Variables
 
-Create a `.env` file in `/server` based on `.env.example`:
+Create a `.env` file in `/server`:
 
 ```env
 # Server
@@ -279,17 +224,6 @@ MONGO_URI=your_mongodb_atlas_connection_string
 # JWT
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=7d
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-# Email (Nodemailer)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=your_email@example.com
-SMTP_PASS=your_email_password
 
 # AI Integration
 AI_PROVIDER=gemini        # or "openai"
@@ -305,77 +239,62 @@ VITE_API_BASE_URL=http://localhost:5000/api
 
 ---
 
-## 📡 API Documentation
+## 📡 API Endpoints
 
-Full endpoint-by-endpoint documentation lives in [`docs/API.md`](./docs/API.md). Summary of core route groups:
+| Route | Method | Description |
+|---|---|---|
+| `/api/auth/signup` | POST | Register a new student |
+| `/api/auth/login` | POST | Login and receive JWT |
+| `/api/resume/upload` | POST | Upload resume PDF & get AI analysis |
+| `/api/resume/:id` | GET | Fetch a saved resume analysis |
+| `/api/mentor/chat` | POST | Send a message to the AI mentor |
+| `/api/mentor/history` | GET | Fetch chat history |
+| `/api/roadmap/generate` | POST | Generate a personalized roadmap |
+| `/api/roadmap/:id` | GET | Fetch a saved roadmap |
 
-| Route Prefix | Description |
-|---|---|
-| `/api/auth` | Signup, login, email verification, password reset |
-| `/api/resume` | Resume upload & AI analysis |
-| `/api/mentor` | AI chat assistant & conversation history |
-| `/api/interview` | Mock interview generation, feedback, history |
-| `/api/jobs` | Job CRUD, search, filter, apply, save |
-| `/api/roadmap` | Personalized roadmap generation |
-| `/api/analytics` | Skill and progress analytics |
-| `/api/notifications` | Notification management |
-| `/api/admin` | User/job management, platform monitoring |
-
-All protected routes require an `Authorization: Bearer <token>` header. Role-restricted routes additionally check the user's role via middleware.
+All routes except signup/login require `Authorization: Bearer <token>`.
 
 ---
 
-## ☁️ Deployment Guide
+## 🗓️ 3-Day Build Plan
 
-Detailed steps are in [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md). Quick summary:
+**Day 1 — Backend Foundation**
+- Express + MongoDB setup, models (`User`, `Resume`, `ChatHistory`, `Roadmap`)
+- JWT auth (signup/login, protected routes)
+- Resume upload (Multer) + AI resume analysis integration
 
-1. **Database** — Create a MongoDB Atlas cluster, whitelist IPs, and grab your connection string.
-2. **Backend (Render)** — Connect your GitHub repo, set the root directory to `server`, add environment variables, and deploy as a Web Service.
-3. **Frontend (Vercel)** — Connect your GitHub repo, set the root directory to `client`, add `VITE_API_BASE_URL` pointing to your Render backend URL, and deploy.
-4. **Post-deploy** — Update `CLIENT_URL` in the backend `.env` to your Vercel domain for CORS configuration, and test all auth/email flows in production.
+**Day 2 — Frontend Core**
+- Auth pages (Login/Signup) + AuthContext
+- Dashboard shell
+- Resume upload UI + analysis results display
+- Mentor chat UI (send/receive + history)
 
----
-
-## 🔒 Security
-
-- Password hashing with **bcrypt**
-- Stateless authentication via **JWT**
-- **Helmet** for secure HTTP headers
-- **CORS** configuration restricted to trusted origins
-- Rate limiting on sensitive endpoints (auth, AI calls)
-- Server-side input validation on all routes
-- XSS protection and sanitized user input
-- Secrets managed exclusively via environment variables
+**Day 3 — Roadmap + Polish + Deploy**
+- Roadmap generator UI
+- Styling pass, responsive check, error handling
+- Deploy frontend (Vercel) + backend (Render) + connect MongoDB Atlas
+- Final README + demo walkthrough
 
 ---
 
-## 🧭 Roadmap
+## 📌 Future Improvements
 
-- [ ] Real-time notifications via WebSockets
-- [ ] Voice-based mock interviews (speech-to-text/text-to-speech)
-- [ ] Portfolio builder with public shareable links
-- [ ] Leaderboard & achievement badge system
-- [ ] LinkedIn/GitHub profile import
-- [ ] Multi-language support
+*(deferred from the original full-scope plan — for after the MVP)*
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please open an issue to discuss proposed changes before submitting a pull request.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- Recruiter & Admin roles
+- Job Portal (post/apply/track applications)
+- Mock Interview module with AI feedback
+- Coding & aptitude practice
+- Notifications system
+- Skill analytics dashboard
+- Bonus features: portfolio builder, LinkedIn import, voice interviews, badges, leaderboard
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
+This project is developed for learning and portfolio demonstration purposes.
 
 ---
 
-<p align="center">Built with ❤️ using the MERN Stack — helping students land their dream jobs, one feature at a time.</p>
+<p align="center">Built with ❤️ using the MERN Stack — MVP scoped for a 3-day sprint.</p>
