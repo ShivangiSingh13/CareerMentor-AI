@@ -1,0 +1,3 @@
+- CareerMentor AI MVP workspace instructions.
+- Keep the scope limited to authentication, resume analysis, mentor chat, roadmap generation, and dashboard summary.
+- Prefer minimal, production-ready implementations over experimental features.
