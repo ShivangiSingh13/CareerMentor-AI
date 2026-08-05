@@ -122,7 +122,7 @@ const callAI = async (prompt) => {
 // ---------------------------------------------------------------------
 // 1. RESUME ANALYSIS
 // ---------------------------------------------------------------------
-export const analyzeResume = async (resumeText) => {
+const analyzeResume = async (resumeText) => {
   const prompt = `
 You are an expert technical resume reviewer and ATS (Applicant Tracking System) simulator.
 Analyze the following resume text and respond with ONLY valid JSON (no markdown, no commentary) in this exact shape:
@@ -188,7 +188,7 @@ const mockAnalyzeResume = (resumeText) => {
 // ---------------------------------------------------------------------
 // 2. CAREER MENTOR CHAT
 // ---------------------------------------------------------------------
-export const getChatReply = async (history, newMessage) => {
+const getChatReply = async (history, newMessage) => {
   const historyText = history
     .map((m) => `${m.role === "user" ? "Student" : "Mentor"}: ${m.content}`)
     .join("\n");
@@ -228,7 +228,7 @@ const mockChatReply = (message) => {
 };
 
 /** Generates a short session title from the first user message */
-export const generateSessionTitle = async (firstMessage) => {
+const generateSessionTitle = async (firstMessage) => {
   const prompt = `Summarize this student message into a 3-5 word chat title, no punctuation, no quotes:\n"${firstMessage}"`;
   try {
     const raw = await callAI(prompt);
@@ -242,7 +242,7 @@ export const generateSessionTitle = async (firstMessage) => {
 // ---------------------------------------------------------------------
 // 3. ROADMAP GENERATION
 // ---------------------------------------------------------------------
-export const generateRoadmap = async ({ currentSkills, targetRole, timeframeWeeks }) => {
+const generateRoadmap = async ({ currentSkills, targetRole, timeframeWeeks }) => {
   const prompt = `
 You are a career roadmap planner. Create a ${timeframeWeeks}-week personalized learning roadmap
 for a student targeting the role "${targetRole}" who currently has these skills: ${currentSkills.join(", ") || "none listed"}.
@@ -310,4 +310,14 @@ const mockRoadmap = ({ currentSkills, targetRole, timeframeWeeks }) => {
   }));
 
   return { weeks };
+};
+
+// ---------------------------------------------------------------------
+// Exports (CommonJS)
+// ---------------------------------------------------------------------
+module.exports = {
+  analyzeResume,
+  getChatReply,
+  generateSessionTitle,
+  generateRoadmap,
 };
