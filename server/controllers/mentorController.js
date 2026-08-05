@@ -1,5 +1,5 @@
 const ChatHistory = require('../models/ChatHistory');
-const { mentorReply } = require('../services/aiService');
+const { getChatReply, generateSessionTitle } = require("../services/aiService");
 
 const getHistory = async (req, res) => {
   try {
