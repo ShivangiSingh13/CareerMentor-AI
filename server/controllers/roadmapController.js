@@ -1,5 +1,5 @@
 const Roadmap = require('../models/Roadmap');
-const { generateRoadmap } = require('../services/aiService');
+const { generateRoadmap } = require("../services/aiService");
 
 const createRoadmap = async (req, res) => {
   try {
