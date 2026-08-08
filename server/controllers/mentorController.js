@@ -25,7 +25,7 @@ const chat = async (req, res) => {
     const chatHistory = await ChatHistory.findOne({ userId: req.user.userId });
     const historyMessages = chatHistory?.messages || [];
     const recentHistory = historyMessages.slice(-10);
-    const aiResponse = await mentorReply({ userMessage: message, history: recentHistory });
+    const assistantMessage = (await getChatReply(recentHistory, message)) || 'I am here to help with your career plan.';
 
     const updatedMessages = [
       ...historyMessages,
