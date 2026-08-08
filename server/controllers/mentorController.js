@@ -26,7 +26,6 @@ const chat = async (req, res) => {
     const historyMessages = chatHistory?.messages || [];
     const recentHistory = historyMessages.slice(-10);
     const aiResponse = await mentorReply({ userMessage: message, history: recentHistory });
-    const assistantMessage = aiResponse.reply || 'I am here to help with your career plan.';
 
     const updatedMessages = [
       ...historyMessages,
