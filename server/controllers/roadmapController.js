@@ -16,12 +16,13 @@ const createRoadmap = async (req, res) => {
           .map((skill) => skill.trim())
           .filter(Boolean);
 
-    const roadmapData = await generateRoadmap({ currentSkills: skillsArray, targetRole });
+    const roadmapData = await generateRoadmap({ currentSkills: skillsArray, targetRole, timeframeWeeks: 8 });
 
     const roadmap = await Roadmap.create({
       userId: req.user.userId,
       targetRole,
       currentSkills: skillsArray,
+      timeframeWeeks: 8,
       weeks: Array.isArray(roadmapData.weeks) ? roadmapData.weeks : []
     });
 
