@@ -2,20 +2,21 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const createToken = (userId) =>
-  jwt.sign({ userId }, process.env.JWT_SECRET, {
+const createToken = (userId, role) =>
+  jwt.sign({ userId, role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d'
   });
 
 const formatUser = (user) => ({
   id: user._id,
   name: user.name,
-  email: user.email
+  email: user.email,
+  role: user.role || 'student'
 });
 
 const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: 'Name, email, and password are required' });
@@ -30,10 +31,11 @@ const signup = async (req, res) => {
     const user = await User.create({
       name,
       email: email.toLowerCase(),
-      password: hashedPassword
+      password: hashedPassword,
+      role: role || 'student'
     });
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
 
     return res.status(201).json({
       success: true,
@@ -64,7 +66,7 @@ const login = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.role);
 
     return res.json({
       success: true,

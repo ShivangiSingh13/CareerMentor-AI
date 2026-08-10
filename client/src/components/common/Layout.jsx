@@ -1,42 +1,80 @@
-import { Link, NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-
-const navLinkClass = ({ isActive }) =>
-  `rounded-full px-4 py-2 text-sm font-medium transition ${isActive ? 'bg-ink text-white' : 'text-slate-600 hover:bg-slate-100'}`;
+import Sidebar from './Sidebar';
+import Topbar from './Topbar';
 
 const Layout = ({ title, subtitle, children }) => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = sidebarOpen && isMobile ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [sidebarOpen, isMobile]);
+
+  const handleToggleSidebar = () => {
+    if (isMobile) {
+      setSidebarOpen((value) => !value);
+      return;
+    }
+    setSidebarCollapsed((value) => !value);
+  };
+  
+  useEffect(() => {
+    if (location.pathname === '/mock-interview' && typeof window !== 'undefined' && window.innerWidth < 768) {
+      setSidebarOpen(true);
+    }
+  }, [location.pathname]);
 
   return (
-    <div className="min-h-screen px-4 py-6 text-slate-900 sm:px-6 lg:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6">
-        <header className="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-soft backdrop-blur">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">CareerMentor AI</p>
-              <h1 className="mt-1 text-2xl font-semibold text-slate-950">{title}</h1>
-              {subtitle ? <p className="mt-1 max-w-2xl text-sm text-slate-600">{subtitle}</p> : null}
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{user?.name}</span>
-              <button
-                type="button"
-                onClick={logout}
-                className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-          <nav className="mt-5 flex flex-wrap gap-2">
-            <NavLink to="/dashboard" className={navLinkClass}>Dashboard</NavLink>
-            <NavLink to="/resume" className={navLinkClass}>Resume Analyzer</NavLink>
-            <NavLink to="/mentor" className={navLinkClass}>Mentor Chat</NavLink>
-            <NavLink to="/roadmap" className={navLinkClass}>Roadmap</NavLink>
-          </nav>
+    <div className="min-h-screen bg-[#f7f9ff] text-slate-900">
+      <Sidebar
+        open={sidebarOpen}
+        collapsed={sidebarCollapsed}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      <div
+        className={`min-h-screen transition-[padding] duration-300 ease-out ${sidebarCollapsed ? 'md:pl-24' : 'md:pl-[260px]'}`}
+      >
+        <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
+          <Topbar onToggleSidebar={handleToggleSidebar} />
         </header>
-        <main>{children}</main>
+
+        <div className="px-4 py-5 sm:px-6 lg:px-8 xl:px-10">
+          {title || subtitle ? (
+            <div className="mb-6 rounded-[24px] border border-slate-200/80 bg-white px-5 py-4 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:px-6">
+              {title ? <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{title}</h1> : null}
+              {subtitle ? <p className="mt-1 text-sm text-slate-600">{subtitle}</p> : null}
+            </div>
+          ) : null}
+
+          <main>{children}</main>
+        </div>
       </div>
+
+      {sidebarOpen && isMobile ? (
+        <button
+          type="button"
+          aria-label="Close navigation overlay"
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-20 cursor-default bg-slate-950/30 md:hidden"
+        />
+      ) : null}
     </div>
   );
 };

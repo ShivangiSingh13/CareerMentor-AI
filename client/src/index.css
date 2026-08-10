@@ -21,6 +21,9 @@ body {
     radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 32%),
     radial-gradient(circle at top right, rgba(16, 185, 129, 0.1), transparent 28%),
     linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -33,4 +36,9 @@ textarea,
 button,
 select {
   font: inherit;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.16);
+  color: #0f172a;
 }

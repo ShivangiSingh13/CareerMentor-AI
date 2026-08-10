@@ -1,6 +1,7 @@
 const pdfParse = require('pdf-parse');
 const Resume = require('../models/Resume');
 const { analyzeResume } = require('../services/aiService');
+const { createNotification } = require('../services/notificationService');
 
 const uploadResume = async (req, res) => {
   try {
@@ -20,6 +21,18 @@ const uploadResume = async (req, res) => {
       missingSkills: Array.isArray(analysis.missingSkills) ? analysis.missingSkills : [],
       suggestions: Array.isArray(analysis.suggestions) ? analysis.suggestions : []
     });
+
+    try {
+      await createNotification({
+        userId: req.user.userId,
+        type: 'resume',
+        title: 'Resume analysis complete',
+        message: `Your resume "${req.file.originalname}" has been analyzed. ATS score: ${resume.atsScore}`,
+        linkTo: `/resume/${resume._id}`
+      });
+    } catch (notifyErr) {
+      console.error('Failed to notify user about resume analysis:', notifyErr.message);
+    }
 
     return res.status(201).json({
       success: true,

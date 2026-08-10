@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'student' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +39,16 @@ const Signup = () => {
           <input name="name" type="text" placeholder="Full name" value={form.name} onChange={handleChange} className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
           <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
           <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500" />
+          <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2">
+              <input type="radio" name="role" value="student" checked={form.role === 'student'} onChange={handleChange} />
+              <span className="ml-1">Student</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="radio" name="role" value="recruiter" checked={form.role === 'recruiter'} onChange={handleChange} />
+              <span className="ml-1">Recruiter</span>
+            </label>
+          </div>
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
           <button type="submit" disabled={loading} className="w-full rounded-2xl bg-ink px-4 py-3 font-medium text-white transition hover:bg-slate-800 disabled:opacity-60">
             {loading ? 'Creating account...' : 'Sign up'}

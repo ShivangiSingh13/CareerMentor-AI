@@ -313,6 +313,135 @@ const mockRoadmap = ({ currentSkills, targetRole, timeframeWeeks }) => {
 };
 
 // ---------------------------------------------------------------------
+// 4. MOCK INTERVIEW GENERATION
+// ---------------------------------------------------------------------
+const generateInterviewQuestions = async ({ role, experience, type, skills = [] }) => {
+  const normalizedSkills = Array.isArray(skills)
+    ? skills
+    : String(skills || '')
+        .split(',')
+        .map((skill) => skill.trim())
+        .filter(Boolean);
+
+  const prompt = `
+You are an expert interviewer for career preparation. Create exactly 5 interview questions tailored to a student targeting the role "${role}" with experience level "${experience}" and interview type "${type}".
+Use the following skills list if provided: ${normalizedSkills.join(', ') || 'none listed'}.
+Return ONLY valid JSON with this exact shape:
+{
+  "questions": ["<q1>", "<q2>", "<q3>", "<q4>", "<q5>"]
+}
+`;
+
+  try {
+    const raw = await callAI(prompt);
+    if (!raw) return mockInterviewQuestions({ role, experience, type, skills: normalizedSkills });
+    const parsed = JSON.parse(cleanJSON(raw));
+    const questions = Array.isArray(parsed.questions) ? parsed.questions.filter((q) => typeof q === 'string' && q.trim()) : [];
+    return {
+      questions: questions.slice(0, 5),
+    };
+  } catch (error) {
+    console.error('AI interview question generation failed, falling back to mock:', error.message);
+    return mockInterviewQuestions({ role, experience, type, skills: normalizedSkills });
+  }
+};
+
+const mockInterviewQuestions = ({ role, experience, type, skills = [] }) => {
+  const skillText = skills.length ? ` with experience in ${skills.slice(0, 3).join(', ')}` : '';
+  const baseQuestions = {
+    HR: [
+      `Tell me about yourself and why you are interested in the ${role} role.`,
+      `What motivates you to pursue a career in ${role}${skillText}?`,
+      `Describe a challenge you faced and how you handled it.`,
+      `Why should we hire you for this ${role} position?`,
+      `What are your career goals for the next two years?`,
+    ],
+    Technical: [
+      `Walk me through a project that demonstrates your fit for a ${role} role${skillText}.`,
+      `How would you approach debugging a production issue in a ${role} system?`,
+      `What technical concepts are most important for someone in ${role}?`,
+      `Describe how you would optimize a slow application or feature.`,
+      `How would you explain your design decisions for a ${role} project?`,
+    ],
+    Behavioral: [
+      `Tell me about a time you worked in a team to solve a difficult problem.`,
+      `Describe a situation where you had to learn something quickly for a ${role} role.`,
+      `How do you handle feedback or criticism from a manager or teammate?`,
+      `Give an example of a time you showed initiative at work or in a project.`,
+      `Tell me about a time you had to balance multiple priorities.`,
+    ],
+  };
+
+  const questions = baseQuestions[type] || baseQuestions.HR;
+  return {
+    questions: questions.slice(0, 5).map((q, index) => {
+      if (index === 0 && experience && experience !== 'Fresher') {
+        return `${q} Focus on your ${experience.toLowerCase()} experience.`;
+      }
+      return q;
+    }),
+  };
+};
+
+const evaluateAnswer = async ({ question, answer, role, type }) => {
+  const prompt = `
+You are a helpful interview coach. Evaluate the following answer to an interview question and return ONLY valid JSON in this exact shape:
+{
+  "score": <number 0-10>,
+  "feedback": "<2-3 sentence constructive feedback>",
+  "suggestedAnswer": "<a strong example answer, 2-4 sentences>",
+  "improvementTips": ["<tip 1>", "<tip 2>"]
+}
+
+Role: ${role}
+Interview type: ${type}
+Question: ${question}
+Answer: ${answer}
+`;
+
+  try {
+    const raw = await callAI(prompt);
+    if (!raw) return mockEvaluateAnswer({ question, role, type });
+    const parsed = JSON.parse(cleanJSON(raw));
+    return normalizeInterviewFeedback(parsed);
+  } catch (error) {
+    console.error('AI interview answer evaluation failed, falling back to mock:', error.message);
+    return mockEvaluateAnswer({ question, role, type });
+  }
+};
+
+const normalizeInterviewFeedback = (parsed) => {
+  const score = Math.max(0, Math.min(10, Number(parsed.score) || 0));
+  const improvementTips = Array.isArray(parsed.improvementTips)
+    ? parsed.improvementTips.filter((tip) => typeof tip === 'string' && tip.trim())
+    : [];
+
+  return {
+    score,
+    feedback: typeof parsed.feedback === 'string' && parsed.feedback.trim()
+      ? parsed.feedback.trim()
+      : 'Your answer was clear and showed good intent. You can strengthen it by adding more structure and concrete examples.',
+    suggestedAnswer: typeof parsed.suggestedAnswer === 'string' && parsed.suggestedAnswer.trim()
+      ? parsed.suggestedAnswer.trim()
+      : 'A strong answer would briefly explain the situation, your action, and the measurable outcome.',
+    improvementTips: improvementTips.length ? improvementTips.slice(0, 2) : [
+      'Use the STAR format to make your response more structured.',
+      'Include a measurable outcome or impact when possible.'
+    ],
+  };
+};
+
+const mockEvaluateAnswer = ({ question, role, type }) => ({
+  score: 6,
+  feedback: `Your answer shows good intent for a ${role} interview. Try to make it more specific by including a concrete example and a clear outcome.`,
+  suggestedAnswer: `For this ${type.toLowerCase()} interview question, describe the situation briefly, explain the actions you took, and finish with the impact or result you achieved.`,
+  improvementTips: [
+    'Use a clear structure such as STAR or Problem-Action-Result.',
+    'Mention a measurable result or lesson learned.'
+  ],
+});
+
+// ---------------------------------------------------------------------
 // Exports (CommonJS)
 // ---------------------------------------------------------------------
 module.exports = {
@@ -320,4 +449,6 @@ module.exports = {
   getChatReply,
   generateSessionTitle,
   generateRoadmap,
+  generateInterviewQuestions,
+  evaluateAnswer,
 };

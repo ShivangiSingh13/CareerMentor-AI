@@ -6,6 +6,14 @@ import ResumeAnalyzer from './pages/ResumeAnalyzer';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import ProtectedRoute from './routes/ProtectedRoute';
+import RoleProtectedRoute from './routes/RoleProtectedRoute';
+import JobBoard from './pages/JobBoard';
+import RecruiterDashboard from './pages/RecruiterDashboard';
+import MyApplications from './pages/MyApplications';
+import SkillAnalytics from './pages/SkillAnalytics';
+import AdminPanel from './pages/AdminPanel';
+import MockInterview from './pages/MockInterview';
+import Resources from './pages/Resources';
 
 const App = () => (
   <Routes>
@@ -49,6 +57,62 @@ const App = () => (
         <ProtectedRoute>
           <Roadmap />
         </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/mock-interview"
+      element={
+        <ProtectedRoute>
+          <MockInterview />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/resources"
+      element={
+        <ProtectedRoute>
+          <Resources />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/jobs"
+      element={
+        <ProtectedRoute>
+          <JobBoard />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/applications"
+      element={
+        <ProtectedRoute>
+          <MyApplications />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/recruiter-dashboard"
+      element={
+        <RoleProtectedRoute allowedRoles={["recruiter"]}>
+          <RecruiterDashboard />
+        </RoleProtectedRoute>
+      }
+    />
+    <Route
+      path="/analytics"
+      element={
+        <ProtectedRoute>
+          <SkillAnalytics />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/admin"
+      element={
+        <RoleProtectedRoute allowedRoles={["recruiter"]}>
+          <AdminPanel />
+        </RoleProtectedRoute>
       }
     />
     <Route path="*" element={<Navigate to="/" replace />} />

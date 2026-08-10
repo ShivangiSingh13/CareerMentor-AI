@@ -29,6 +29,11 @@ const roadmapSchema = new mongoose.Schema(
           type: [String],
           default: []
         }
+        ,
+        completed: {
+          type: Boolean,
+          default: false
+        }
       }
     ]
   },

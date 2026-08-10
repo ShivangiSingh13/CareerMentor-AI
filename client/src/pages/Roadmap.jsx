@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import Layout from '../components/common/Layout';
 import RoadmapWeek from '../components/common/RoadmapWeek';
-import { generateRoadmap, getRoadmapById } from '../services/roadmapService';
+import RoadmapTimeline from '../components/roadmap/RoadmapTimeline';
+import MilestoneModal from '../components/roadmap/MilestoneModal';
+import { generateRoadmap, getRoadmapById, markWeekComplete } from '../services/roadmapService';
 
 const Roadmap = () => {
   const [form, setForm] = useState({ currentSkills: '', targetRole: '' });
   const [roadmap, setRoadmap] = useState(null);
+  const [modal, setModal] = useState({ open: false, weekIndex: null });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -51,11 +54,19 @@ const Roadmap = () => {
             <div className="rounded-3xl border border-white/70 bg-white p-6 shadow-soft">
               <h3 className="text-lg font-semibold text-slate-950">{roadmap.targetRole}</h3>
               <p className="mt-1 text-sm text-slate-500">Current skills: {(roadmap.currentSkills || []).join(', ') || 'None'}</p>
-              <div className="mt-5 space-y-4">
-                {(roadmap.weeks || []).map((week, index) => (
-                  <RoadmapWeek key={`${week.title}-${index}`} week={week} index={index} />
-                ))}
+              <div className="mt-5">
+                <RoadmapTimeline weeks={roadmap.weeks || []} onOpenMilestone={(i) => setModal({ open: true, weekIndex: i })} />
               </div>
+              <MilestoneModal open={modal.open} week={roadmap.weeks?.[modal.weekIndex]} index={modal.weekIndex} onClose={() => setModal({ open: false, weekIndex: null })} onMarkComplete={async (i) => {
+                try {
+                  await markWeekComplete(roadmap._id, i);
+                  const updated = await getRoadmapById(roadmap._id);
+                  setRoadmap(updated.roadmap);
+                  setModal({ open: false, weekIndex: null });
+                } catch (err) {
+                  alert(err.response?.data?.message || 'Failed to mark week complete');
+                }
+              }} />
             </div>
           ) : (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-white/70 p-6 text-sm text-slate-500 shadow-soft">

@@ -10,6 +10,12 @@ const authRoutes = require('./routes/authRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const mentorRoutes = require('./routes/mentorRoutes');
 const roadmapRoutes = require('./routes/roadmapRoutes');
+const interviewRoutes = require('./routes/interviewRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -30,6 +36,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/mentor', mentorRoutes);
 app.use('/api/roadmap', roadmapRoutes);
+app.use('/api/interview', interviewRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((error, req, res, next) => {
   if (error) {
